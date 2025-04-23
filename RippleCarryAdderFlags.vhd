@@ -4,13 +4,13 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity RippleCarryAdder is
     generic (
-        N : integer := 8  -- Width of the adder
+        N : integer := 8
     );
     port (
         A        : in  STD_LOGIC_VECTOR(N-1 downto 0);
         B        : in  STD_LOGIC_VECTOR(N-1 downto 0);
         Cin      : in  STD_LOGIC;
-        Sum      : out STD_LOGIC_VECTOR(N-1 downto 0);
+        S        : out STD_LOGIC_VECTOR(N-1 downto 0);
         Cout     : out STD_LOGIC;
         Zero     : out STD_LOGIC;
         Overflow : out STD_LOGIC;
@@ -25,7 +25,7 @@ architecture Structural of RippleCarryAdder is
             A    : in  STD_LOGIC;
             B    : in  STD_LOGIC;
             Cin  : in  STD_LOGIC;
-            Sum  : out STD_LOGIC;
+            S    : out STD_LOGIC;
             Cout : out STD_LOGIC
         );
     end component;
@@ -42,17 +42,17 @@ begin
                 A    => A(i),
                 B    => B(i),
                 Cin  => carry(i),
-                Sum  => sum_internal(i),
+                S    => sum_internal(i),
                 Cout => carry(i+1)
             );
     end generate;
 
-    Sum <= sum_internal;
+    S    <= sum_internal;
     Cout <= carry(N);
 
     -- Flags
     Zero <= '1' when sum_internal = (others => '0') else '0';
     Negative <= sum_internal(N-1);
-    Overflow <= carry(N) xor carry(N-1);  -- Sign overflow detection
+    Overflow <= carry(N) xor carry(N-1);
 
 end Structural;

@@ -6,7 +6,7 @@ entity FullAdder is
         A    : in  STD_LOGIC;
         B    : in  STD_LOGIC;
         Cin  : in  STD_LOGIC;
-        Sum  : out STD_LOGIC;
+        S  : out STD_LOGIC;
         Cout : out STD_LOGIC
     );
 end FullAdder;
@@ -15,7 +15,7 @@ architecture Behavioral of FullAdder is
 begin
     process(A, B, Cin)
     begin
-        Sum  <= A XOR B XOR Cin;
+        S  <= A XOR B XOR Cin;
         Cout <= (A AND B) OR (B AND Cin) OR (A AND Cin);
     end process;
 end Behavioral;

@@ -9,7 +9,7 @@ entity RippleCarryAdder is
         A    : in  STD_LOGIC_VECTOR(N-1 downto 0);
         B    : in  STD_LOGIC_VECTOR(N-1 downto 0);
         Cin  : in  STD_LOGIC;
-        Sum  : out STD_LOGIC_VECTOR(N-1 downto 0);
+        S    : out STD_LOGIC_VECTOR(N-1 downto 0);
         Cout : out STD_LOGIC
     );
 end RippleCarryAdder;
@@ -21,7 +21,7 @@ architecture Structural of RippleCarryAdder is
             A    : in  STD_LOGIC;
             B    : in  STD_LOGIC;
             Cin  : in  STD_LOGIC;
-            Sum  : out STD_LOGIC;
+            S    : out STD_LOGIC;
             Cout : out STD_LOGIC
         );
     end component;
@@ -37,7 +37,7 @@ begin
                 A    => A(i),
                 B    => B(i),
                 Cin  => carry(i),
-                Sum  => Sum(i),
+                S    => S(i),
                 Cout => carry(i+1)
             );
     end generate;

@@ -13,13 +13,13 @@ architecture Behavioral of FullAdder_tb is
             A    : in  STD_LOGIC;
             B    : in  STD_LOGIC;
             Cin  : in  STD_LOGIC;
-            Sum  : out STD_LOGIC;
+            S  : out STD_LOGIC;
             Cout : out STD_LOGIC
         );
     end component;
 
     signal A, B, Cin : STD_LOGIC := '0';
-    signal Sum, Cout : STD_LOGIC;
+    signal S, Cout : STD_LOGIC;
 
 begin
 
@@ -28,7 +28,7 @@ begin
             A => A,
             B => B,
             Cin => Cin,
-            Sum => Sum,
+            S => S,
             Cout => Cout
         );
 
