@@ -1,7 +1,0 @@
-Give students AndGate.vhd and tb. Ask them to propose an expected truth table. Simulate and verify.
-
-Then ask them to modify into a full adder from diagram. Requires extra IO and logic.
-
-Then provide RippleCarryAdder.vhd and test 8 bit numbers.
-
-Explain Zero, negative, and OF flags. 
