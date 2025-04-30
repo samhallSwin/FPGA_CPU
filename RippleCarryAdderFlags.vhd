@@ -51,7 +51,7 @@ begin
     Cout <= carry(N);
 
     -- Flags
-    Zero <= '1' when sum_internal = (others => '0') else '0';
+    Zero <= '1' when sum_internal = std_logic_vector(to_unsigned(0, N)) else '0';
     Negative <= sum_internal(N-1);
     Overflow <= carry(N) xor carry(N-1);
 
