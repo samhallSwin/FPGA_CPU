@@ -36,6 +36,7 @@ architecture Behavioral of ALU is
         );
     end component;
 
+    -- Internal signals
     signal B_adder     : STD_LOGIC_VECTOR(N-1 downto 0);
     signal adder_sum   : STD_LOGIC_VECTOR(N-1 downto 0);
     signal adder_ovf   : STD_LOGIC;
@@ -44,8 +45,10 @@ architecture Behavioral of ALU is
 
 begin
 
+    -- ALU Operation Selection (combinational)
     process(A_in, B_in, ALUOp, adder_sum)
     begin
+        -- Default assignments
         B_adder     <= (others => '0');
         Cin         <= '0';
         result_comb <= (others => '0');
@@ -65,7 +68,7 @@ begin
                 result_comb <= A_in and B_in;
 
             when OP_OR =>
-                result_comb <= A;
+                result_comb <= ;
 
             when OP_XOR =>
                 result_comb <= ;
@@ -75,6 +78,7 @@ begin
         end case;
     end process;
 
+    -- Ripple Carry Adder instantiation
     RCA: RippleCarryAdder
         generic map (N => N)
         port map (

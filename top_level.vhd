@@ -158,9 +158,6 @@ begin
                         PC <= std_logic_vector(unsigned(PC) + 1);
                     end if;
     
-                when OP_JMP =>
-                    PC <= arg3;
-    
                 when others =>
                     PC <= std_logic_vector(unsigned(PC) + 1);
             end case;
