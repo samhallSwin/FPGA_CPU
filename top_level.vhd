@@ -32,7 +32,7 @@ end CPU;
 architecture Behavioral of CPU is
 
     -- Program Counter
-    signal PC        : STD_LOGIC_VECTOR(N-1 downto 0) := (others => '0');
+    signal PC        : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
     -- Instruction fetch
     signal instr     : STD_LOGIC_VECTOR(31 downto 0);
@@ -53,17 +53,19 @@ architecture Behavioral of CPU is
     signal alu_negative   : STD_LOGIC;
     signal alu_overflow   : STD_LOGIC;
 
+    signal write_addr_resize : STD_LOGIC_VECTOR(N-1 downto 0):= (others => '0');
+
 begin
 
     U_IM: entity work.InstructionMemory
         generic map (N => N)
         port map (
-            addr         => PC,
+            addr => (N-1 downto 8 => '0') & PC,
             instr_out    => instr,
 
             -- External write interface
             write_enable => write_enable,
-            write_addr   => write_addr,
+            write_addr   => write_addr_resize,
             byte_select  => byte_select,
             write_data   => write_data
         );
@@ -120,7 +122,7 @@ begin
 
             when OP_MOV =>
                 RegWrite       <= '1';
-                reg_write_data <= arg1;
+                reg_write_data(7 downto 0) <= arg1;
 
             when OP_IN =>
                 RegWrite       <= '1';
@@ -186,5 +188,7 @@ begin
     end process;
     
     data_out <= reg_read_data1(7 downto 0) when opcode = OP_OUT else (others => '0'); --handle output 
+
+    write_addr_resize(7 downto 0) <= write_addr;
 
 end Behavioral;

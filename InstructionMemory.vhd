@@ -8,7 +8,7 @@ entity InstructionMemory is
         N : integer := 8
     );
     port (
-        addr        : in  STD_LOGIC_VECTOR(N-1 downto 0); 
+        addr        : in  STD_LOGIC_VECTOR(N-1 downto 0):= (others => '0'); 
         instr_out   : out STD_LOGIC_VECTOR(31 downto 0);
 
         -- New ports for writing

@@ -7,10 +7,12 @@ end CPU_tb;
 
 architecture Behavioral of CPU_tb is
 
+    constant CLK_PERIOD : time := 10 ns;
+
     -- Signals to connect to CPU
     signal clk          : STD_LOGIC := '0';
     signal reset        : STD_LOGIC := '1'; -- start with reset asserted
-    signal cpu_run      : STD_LOGIC := '0'; -- start with reset asserted
+    signal cpu_run      : STD_LOGIC := '0'; 
 
     -- Instruction Memory write interface
     signal write_enable : STD_LOGIC := '0';
@@ -23,7 +25,7 @@ architecture Behavioral of CPU_tb is
 
 begin
 
-    -- Instantiate CPU with extended ports
+    -- Instantiate CPU
     UUT: entity work.CPU
         generic map (
             N => 8
@@ -40,18 +42,18 @@ begin
             write_data   => write_data
         );
 
-    -- Clock Generation: 10ns period
+    -- Clock Generation
     clk_process : process
     begin
         while True loop
             clk <= '1';
-            wait for 5 ns;
+            wait for CLK_PERIOD / 2;
             clk <= '0';
-            wait for 5 ns;
+            wait for CLK_PERIOD / 2;
         end loop;
     end process;
 
-    -- Instruction Memory Loader
+    -- Instruction Memory Loader (ignore this)
     imem_loader : process
         procedure write_instr_byte(
             addr : in STD_LOGIC_VECTOR(7 downto 0);
@@ -63,19 +65,22 @@ begin
             write_addr   <= addr;
             byte_select  <= sel;
             write_data   <= data;
-            wait for 10 ns;
+            wait for CLK_PERIOD;
             write_enable <= '0';
-            wait for 10 ns;
+            wait for CLK_PERIOD;
         end procedure;
     begin
 
-        wait for 40 ns;
+        wait for CLK_PERIOD * 4;
         reset <= '0';
 
-        data_in <= x"FA";
-        wait for 20 ns;
+        wait for CLK_PERIOD * 2;
         cpu_run <= '1';
+        --------------
+        --Add test logic below this
+        -------------
 
+        
         wait;
     end process;
 

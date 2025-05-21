@@ -1,18 +1,19 @@
 # Clock Input (GCLK)
 set_property PACKAGE_PIN Y9 [get_ports clk]
-set_property IOSTANDARD LVCMOS33 [get_ports clk]
+create_clock -name clk -period 10.000 [get_ports clk]
+#set_property IOSTANDARD LVCMOS33 [get_ports clk]
 
 # Reset Button (BTNC)
 set_property PACKAGE_PIN P16 [get_ports reset]
-set_property IOSTANDARD LVCMOS18 [get_ports reset]
+#set_property IOSTANDARD LVCMOS18 [get_ports reset]
 
 # Run signal (SW0)
 set_property PACKAGE_PIN T18 [get_ports cpu_run]
-set_property IOSTANDARD LVCMOS18 [get_ports cpu_run]
+#set_property IOSTANDARD LVCMOS18 [get_ports cpu_run]
 
 # Write Enable (SW1)
 set_property PACKAGE_PIN R16 [get_ports write_enable]
-set_property IOSTANDARD LVCMOS18 [get_ports write_enable]
+#set_property IOSTANDARD LVCMOS18 [get_ports write_enable]
 
 # Write Address (SW0 to SW7)
 set_property PACKAGE_PIN F22 [get_ports write_addr[0]];  # "SW0"
