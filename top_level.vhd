@@ -18,12 +18,12 @@ entity CPU is
         reset        : in  STD_LOGIC;
         cpu_run      : in  STD_LOGIC; --don't start the program until we assert this (useful for new program loading)
 
-        data_out     : out STD_LOGIC_VECTOR(N-1 downto 0);
-        data_in      : in STD_LOGIC_VECTOR(N-1 downto 0);
+        data_out     : out STD_LOGIC_VECTOR(7 downto 0);
+        data_in      : in STD_LOGIC_VECTOR(7 downto 0);
 
         -- New ports for writing to instruction memory
         write_enable : in  STD_LOGIC;
-        write_addr   : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        write_addr   : in  STD_LOGIC_VECTOR(7 downto 0);
         byte_select  : in  STD_LOGIC_VECTOR(1 downto 0);
         write_data   : in  STD_LOGIC_VECTOR(7 downto 0)
     );
@@ -124,7 +124,7 @@ begin
 
             when OP_IN =>
                 RegWrite       <= '1';
-                reg_write_data <= data_in;
+                reg_write_data(7 downto 0) <= data_in;
 
             when others =>
                 RegWrite       <= '0';
@@ -185,6 +185,6 @@ begin
         end if;
     end process;
     
-    data_out <= reg_read_data1 when opcode = OP_OUT else (others => '0'); --handle output 
+    data_out <= reg_read_data1(7 downto 0) when opcode = OP_OUT else (others => '0'); --handle output 
 
 end Behavioral;
