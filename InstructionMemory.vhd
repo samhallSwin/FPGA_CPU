@@ -8,14 +8,20 @@ entity InstructionMemory is
         N : integer := 8
     );
     port (
-        addr       : in  STD_LOGIC_VECTOR(N-1 downto 0); 
-        instr_out  : out STD_LOGIC_VECTOR(31 downto 0)  
+        addr        : in  STD_LOGIC_VECTOR(N-1 downto 0); 
+        instr_out   : out STD_LOGIC_VECTOR(31 downto 0);
+
+        -- New ports for writing
+        write_enable : in STD_LOGIC;
+        write_addr   : in STD_LOGIC_VECTOR(N-1 downto 0);  -- address to write to
+        byte_select  : in STD_LOGIC_VECTOR(1 downto 0);    -- select which byte (00 to 11)
+        write_data   : in STD_LOGIC_VECTOR(7 downto 0)     -- data to write
     );
 end InstructionMemory;
 
 architecture Behavioral of InstructionMemory is
 
-    signal instr_reg : STD_LOGIC_VECTOR(31 downto 0);
+    signal updated_instr : STD_LOGIC_VECTOR(31 downto 0);
     -- Instruction memory array: each entry is a 32-bit instruction
     type instruction_mem_type is array(0 to 255) of STD_LOGIC_VECTOR(31 downto 0);
     signal instr_mem : instruction_mem_type := (
@@ -39,5 +45,24 @@ architecture Behavioral of InstructionMemory is
 begin
 
     instr_out <= instr_mem(to_integer(unsigned(addr)));
+
+    -- Asynchronous write to memory
+    process(write_enable, write_addr, byte_select, write_data)
+    begin
+        if write_enable = '1' then
+            case byte_select is
+                when "11" =>
+                    instr_mem(to_integer(unsigned(write_addr)))(31 downto 24) <= write_data;
+                when "10" =>
+                    instr_mem(to_integer(unsigned(write_addr)))(23 downto 16) <= write_data;
+                when "01" =>
+                    instr_mem(to_integer(unsigned(write_addr)))(15 downto 8) <= write_data;
+                when "00" =>
+                    instr_mem(to_integer(unsigned(write_addr)))(7 downto 0) <= write_data;
+                when others =>
+
+            end case;
+        end if;
+    end process;
 
 end Behavioral;

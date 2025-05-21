@@ -57,18 +57,18 @@ begin
                 result_comb <= adder_sum;
 
             when OP_SUB =>
-                B_adder     <= ;
-                Cin         <= ;
-                result_comb <= ;
+                B_adder     <= not b_in;
+                Cin         <= '1';
+                result_comb <= adder_sum;
 
             when OP_AND =>
                 result_comb <= A_in and B_in;
 
             when OP_OR =>
-                result_comb <= A;
+                result_comb <= A_in or B_in;
 
             when OP_XOR =>
-                result_comb <= ;
+                result_comb <= A_in xor B_in;
 
             when others =>
                 result_comb <= (others => '0');

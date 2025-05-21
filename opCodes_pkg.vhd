@@ -28,7 +28,9 @@ package opCodes_Pkg is
         OP_MOV, -- Puts a value in a register. Arguments: Value, N/A, Dest_reg 
         OP_JEQ, -- Moves the program counter to target when A = B. Arguments: A_reg, B_reg, PC_target 
         OP_JLT, -- Moves the program counter to target when A < B. Arguments: A_reg, B_reg, PC_target
-        OP_JGT  -- Moves the program counter to target when A > B. Arguments: A_reg, B_reg, PC_target
+        OP_JGT,  -- Moves the program counter to target when A > B. Arguments: A_reg, B_reg, PC_target
+        OP_IN,   -- Sends the input data to a register. Arguments: N/A, N/A, dest_reg
+        OP_OUT  -- Sends the content of a register to the output. Arguments: A_reg, N/A, N/A
     );
 
     -- Register names
@@ -66,6 +68,8 @@ package body opCodes_Pkg is
             when 7  => return OP_JEQ;
             when 8  => return OP_JLT;
             when 9  => return OP_JGT;
+            when 10  => return OP_IN;
+            when 11  => return OP_OUT;
             when others => return OP_NOP;
         end case;
     end function;

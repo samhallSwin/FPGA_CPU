@@ -14,8 +14,18 @@ entity CPU is
         N : integer := 8  -- How many bits is the CPU? This effects ALU size, program length
     );
     port (
-        clk    : in  STD_LOGIC;
-        reset  : in  STD_LOGIC
+        clk          : in  STD_LOGIC;
+        reset        : in  STD_LOGIC;
+        cpu_run      : in  STD_LOGIC; --don't start the program until we assert this (useful for new program loading)
+
+        data_out     : out STD_LOGIC_VECTOR(N-1 downto 0);
+        data_in      : in STD_LOGIC_VECTOR(N-1 downto 0);
+
+        -- New ports for writing to instruction memory
+        write_enable : in  STD_LOGIC;
+        write_addr   : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        byte_select  : in  STD_LOGIC_VECTOR(1 downto 0);
+        write_data   : in  STD_LOGIC_VECTOR(7 downto 0)
     );
 end CPU;
 
@@ -48,8 +58,14 @@ begin
     U_IM: entity work.InstructionMemory
         generic map (N => N)
         port map (
-            addr      => PC,
-            instr_out => instr
+            addr         => PC,
+            instr_out    => instr,
+
+            -- External write interface
+            write_enable => write_enable,
+            write_addr   => write_addr,
+            byte_select  => byte_select,
+            write_data   => write_data
         );
 
     U_RF: entity work.RegisterFile
@@ -91,6 +107,17 @@ begin
         end case;
     end process;
 
+    process(opcode)
+    begin
+        case opcode is
+            when OP_OUT  =>
+                data_out <= reg_read_data1;
+            when others =>
+                data_out <= (others => '0');
+        end case;       
+
+    end process;
+
     -- Control: register write logic
     process(opcode, arg1, alu_result)
     begin
@@ -105,6 +132,10 @@ begin
             when OP_MOV =>
                 RegWrite       <= '1';
                 reg_write_data <= arg1;
+
+            when OP_IN =>
+                RegWrite       <= '1';
+                reg_write_data <= data_in;
 
             when others =>
                 RegWrite       <= '0';
@@ -129,9 +160,9 @@ begin
     end process;    
 
     -- PC, fetch, and decode
-    process(clk, reset)
+    process(clk, reset, cpu_run)
     begin
-        if reset = '1' then
+        if reset = '1' or cpu_run = '0' then
             PC        <= (others => '0');
 
         elsif rising_edge(clk) then
