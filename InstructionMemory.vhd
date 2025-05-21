@@ -33,9 +33,11 @@ architecture Behavioral of InstructionMemory is
     -- If you want to refernce a register it needs to be in the form 'regcode_to_stdvec([register number])'
     -------------------------------------------------
 
-    1 => make_instr(OP_MOV, x"01", (others => '0'), regcode_to_stdvec(R0)), --put 1 in R0
-    2 => make_instr(OP_MOV, x"05", (others => '0'), regcode_to_stdvec(R1)), -- put 5 in R1
-    3 => make_instr(OP_ADD, regcode_to_stdvec(R0), regcode_to_stdvec(R1), regcode_to_stdvec(R2)), --add R0 to R1, store results in R2
+    1 => make_instr(OP_IN, (others => '0'), (others => '0'), regcode_to_stdvec(R2)), --put 1 in R0
+    2 => make_instr(OP_MOV, x"02", (others => '0'), regcode_to_stdvec(R1)), -- put 5 in R1
+    3 => make_instr(OP_ADD, regcode_to_stdvec(R2), regcode_to_stdvec(R1), regcode_to_stdvec(R5)), -- put 5 in R1
+    4 => make_instr(OP_NOP, (others => '0'), (others => '0'), (others => '0')), -- put 5 in R1
+    5 => make_instr(OP_OUT, regcode_to_stdvec(R5), (others => '0'), (others => '0')), --add R0 to R1, store results in R2
 
     --end program here
     -------------------------------------------------

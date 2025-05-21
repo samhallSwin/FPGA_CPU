@@ -107,17 +107,6 @@ begin
         end case;
     end process;
 
-    process(opcode)
-    begin
-        case opcode is
-            when OP_OUT  =>
-                data_out <= reg_read_data1;
-            when others =>
-                data_out <= (others => '0');
-        end case;       
-
-    end process;
-
     -- Control: register write logic
     process(opcode, arg1, alu_result)
     begin
@@ -196,5 +185,6 @@ begin
         end if;
     end process;
     
+    data_out <= reg_read_data1 when opcode = OP_OUT else (others => '0'); --handle output 
 
 end Behavioral;
